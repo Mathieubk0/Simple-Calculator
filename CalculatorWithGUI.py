@@ -8,7 +8,7 @@ class Calculator:
 
         self.GUI.configure(background="red")
         self.GUI.title("Calculator")
-        self.GUI.geometry("375x375")
+        self.GUI.geometry("375x410")
 
         self.create_widgets()
 
@@ -24,9 +24,10 @@ class Calculator:
 
         buttons_data = [
             ('1', '#BB11FF'), ('2', '#BB11FF'), ('3', '#BB11FF'), ('+', '#4b9dff'),
-            ('4', '#BB11FF'), ('5', '#BB11FF'), ('6', '#BB11FF'), ('-', '#4b9dff'),
-            ('7', '#BB11FF'), ('8', '#BB11FF'), ('9', '#BB11FF'), ('*', '#4b9dff'),
-            ('C', 'sky blue'), ('0', '#FF964F'), ('=', '#08ff08'), ('/', '#4b9dff')
+            ('4', '#BB11FF'), ('5', '#BB11FF'), ('6', '#BB11FF'), ('-', '#60b2ff'),
+            ('7', '#BB11FF'), ('8', '#BB11FF'), ('9', '#BB11FF'), ('*', '#76c8ff'),
+            ('C', '#FF964F'), ('0', '#BB11FF'), ('=', '#08ff08'), ('/', '#8bddff'),
+            ('M+', '#4b9dff'), ('MRC', '#60b2ff'), ('MC', '#76c8ff')
         ]
 
         row_num = 1
@@ -54,6 +55,12 @@ class Calculator:
                 button.config(command=self.clear)
             elif text == '=':
                 button.config(command=self.calculate)
+            elif text == 'M+':
+                button.config(command=self.save_to_memory)
+            elif text == 'MRC':
+                button.config(command=self.retrieve_from_memory)
+            elif text == 'MC':
+                button.config(command=self.clear_memory)
             else:
                 button.config(command=lambda t=text: self.press(t))
 
@@ -78,6 +85,28 @@ class Calculator:
             self.operation.set("Error")
         finally:
             self.expression = ""
+    
+    def save_to_memory(self):
+        value = self.operation.get()
+        with open("memory.txt", "w") as file:
+            file.write(value)
+
+    def retrieve_from_memory(self):
+        try:
+            with open("memory.txt", "r") as file:
+                value = file.read()
+                self.expression += value
+                self.operation.set(self.expression)
+        except FileNotFoundError:
+            self.operation.set("Nothing stored yet 🤓")
+
+    def clear_memory(self):
+        try:
+            with open("memory.txt", "w") as file:
+                file.write("")
+                self.operation.set("Memory Cleared")
+        except Exception:
+            self.operation.set("Error clearing memory")
 
     def run_calculator(self):
         self.GUI.mainloop()

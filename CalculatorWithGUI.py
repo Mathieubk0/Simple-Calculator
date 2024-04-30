@@ -90,7 +90,7 @@ class Calculator:
             result = eval(self.expression)
             self.operation.set(result)
             self.log_operation(self.expression + " = " + str(result))
-        except Exception as e:
+        except Exception:
             self.operation.set("Error")
         finally:
             self.expression = ""

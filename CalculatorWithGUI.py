@@ -105,9 +105,12 @@ class Calculator:
         try:
             with open("memory.txt", "r") as file:
                 value = file.read()
-                self.expression += value
-                self.operation.set(self.expression)
-                self.log_operation("MRC " + value)
+                if value:
+                    self.expression += value
+                    self.operation.set(self.expression)
+                    self.log_operation("MRC " + value)
+                else:
+                    self.operation.set("Nothing stored yet 🤓")
         except FileNotFoundError:
             self.operation.set("Nothing stored yet 🤓")
 

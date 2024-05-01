@@ -6,7 +6,7 @@ class TestCalculator(unittest.TestCase):
     def setUp(self):
         self.calculator = Calculator()
 
-    def cleanAfterEachTest(self):
+    def tearDown(self):
         pass
 
     def test_press(self):
